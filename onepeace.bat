@@ -1,3 +1,1 @@
 python onepeace.py
-
-pause
