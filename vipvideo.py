@@ -4,11 +4,14 @@ import re
 from bs4 import BeautifulSoup
 import json
 import os
+import sys
 
 if __name__ == '__main__':
-
-    url = 'http://www.iqiyi.com/a_19rrhb3xvl.html'
-
+    #海贼王
+    #url = 'http://www.iqiyi.com/a_19rrhb3xvl.html'
+    videoName = sys.argv[1]
+    url = sys.argv[2]
+    print(videoName,url)
     headers = {
         'Access-Control-Allow-Credentials': 'true',
         'Cache-Control': 'max-age=900',
@@ -27,17 +30,15 @@ if __name__ == '__main__':
 
     videolist = ""
     for liSoup in listSoup:
-        strLi = str(liSoup)
-        strLi = strLi.replace('\r\n','').replace('\n','').replace(' ','')
-        #print(strLi)
-        info = re.search('''<lidata-albumlist-elem="playItem"data-order="(.*?)"\
-data-order-name=""style=""><divclass="site-piclist_pic"><aclass="site-piclist_pic_link"data-pb="c1=4"href="//(.*?)"\
-rseat="708222_sub1_tuwenplay"target="_blank"title="(.*?)"><imgalt="''',strLi)
-        #print(info.group(1),info.group(2),info.group(3))
-        video = '<button align="center" type="button" onclick="onPlay(\'https://' + info.group(2) + '\')">' +info.group(1)+ '</button>\n'
+        linkSoup = liSoup.find("a", attrs={"class": "site-piclist_pic_link"})
+        idx = liSoup.get("data-order")
+        link = linkSoup.get("href")
+        title = linkSoup.get("title")
+        #print(idx,link,title)
+        video = '<button align="center" type="button" onclick="onPlay(\'https:' + link + '\')">' +idx+ '</button>\n'
         videolist = videolist + video
 
-    fileName = "one_peace.html"
+    fileName = videoName+".html"
     file = open(fileName,"w")
     htmlContent = '''
     <html>
@@ -61,13 +62,14 @@ rseat="708222_sub1_tuwenplay"target="_blank"title="(.*?)"><imgalt="''',strLi)
             onPlay(url.value);
         }
   </SCRIPT>
-  <title>    海贼王播放器    </title>
+  <title>    titleToReplace视频播放器    </title>
 </head>
 <body onload="onload()" bgcolor=#000000>
 <table  width="100%" align="center" height="100%" border="0" cellpadding="0" cellspacing="0">
 <tr>
+	<title>titleToReplace</title>
 	<div class="form-group form-group-lg input-group input-group-lg">
-        buttonlist
+        buttonToReplace
 		<br>
     </div>
 	<div class="am-panel-bd player-box">
@@ -113,7 +115,7 @@ rseat="708222_sub1_tuwenplay"target="_blank"title="(.*?)"><imgalt="''',strLi)
 </body>
 </html>
     '''
-    htmlContent = htmlContent.replace("buttonlist",videolist)
+    htmlContent = htmlContent.replace("buttonToReplace",videolist).replace("titleToReplace",videoName)
 
     file.write(htmlContent)    
     file.close()
