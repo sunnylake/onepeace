@@ -1,1 +1,1 @@
-python vipvideo.py ∫£‘ÙÕı "http://www.iqiyi.com/a_19rrhb3xvl.html"
+python vipvideo.py vip http://www.iqiyi.com/a_19rrhb3xvl.html

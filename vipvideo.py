@@ -6,6 +6,9 @@ import json
 import os
 import sys
 
+reload(sys)
+sys.setdefaultencoding("UTF-8")
+
 if __name__ == '__main__':
     #海贼王
     #url = 'http://www.iqiyi.com/a_19rrhb3xvl.html'
